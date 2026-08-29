@@ -1,8 +1,7 @@
 name: security
 
 on:
-  push:
-    branches: [main]
+  push: # all branches — a secret pushed to any branch must be caught immediately
   pull_request:
 
 permissions:
