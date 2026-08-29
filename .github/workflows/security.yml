@@ -26,14 +26,15 @@ jobs:
     name: Dependency review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    # Non-blocking until the repo has real dependency manifests (Maven/npm)
-    # and the "Dependency graph" repo setting is enabled. Remove
-    # continue-on-error once both are true, so this starts gating merges.
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Review dependencies
+        # Non-blocking until the repo has real dependency manifests
+        # (Maven/npm) and the "Dependency graph" repo setting is enabled.
+        # Remove continue-on-error once both are true, so this starts
+        # gating merges.
+        continue-on-error: true
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
