@@ -86,9 +86,24 @@ product repo):
 4. Commit + open **PR #2** for docs/gstack.md (+ hook is machine-local
    config, not committed).
 
-**Last confirmed status:** user finished Bun install; was told to run step 1
-and report back. Step 2 (hook) not yet written. If resuming and step 1 is
-already done, go straight to step 2.
+**Status: steps 1–3 done.** gstack installed globally in basic mode
+(`~/.claude/skills/gstack`, 55 skills, 76 browse commands; Playwright
+Chromium install failed harmlessly — Node 18.19.1 on this machine, needs
+Node 20+ for browse/automation commands only, core skills unaffected).
+Hook written at `~/.claude/hooks/gstack-guard.sh` and registered in
+`~/.claude/settings.json` under `PreToolUse` / matcher `Skill` — denies any
+`gstack` or `gstack:*` skill unless cwd is under `~/Roost`; tested with 3
+cases (blocked outside, allowed inside, unaffected for non-gstack skills),
+all passed. `docs/gstack.md` written and committed. Step 4 (open PR) was
+folded into PR #1 instead of a separate PR #2 — see below.
+
+**Note on process deviation:** the original plan was a separate PR #2 for
+gstack docs. In practice, both `docs/HANDOFF.md` and `docs/gstack.md` were
+committed onto the still-open `chore/repo-foundation` (PR #1) branch instead
+— branching a new PR off `main` before PR #1 merges would miss all the
+foundation work. Once PR #1 merges, subsequent work (backend scaffold, etc.)
+should branch cleanly from `main` and go back to one-PR-per-feature.
+**Recommend merging PR #1 soon** to unblock normal branching.
 
 ## Next after gstack scoping
 
