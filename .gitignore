@@ -60,6 +60,11 @@ pnpm-debug.log*
 *.iml
 *.ipr
 *.iws
+# Eclipse / Buildship
+.classpath
+.project
+.settings/
+bin/
 .vscode/*
 !.vscode/extensions.json
 *.swp
@@ -86,3 +91,8 @@ docker-data/
 postgres-data/
 redis-data/
 livekit-data/
+
+# ─────────────────────────────────────────────────────────────
+# Local tooling bootstrap (temporary Gradle download, never commit)
+# ─────────────────────────────────────────────────────────────
+.bootstrap/

@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: roost-backend
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:roost}
+    username: ${POSTGRES_USER:roost}
+    # No default: fail fast if absent rather than boot on a weak fallback.
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+
+server:
+  port: ${BACKEND_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+# Application-specific config. JWT_SECRET has no default on purpose: the app
+# must fail fast if the secret is absent rather than boot with a weak fallback.
+roost:
+  security:
+    jwt-secret: ${JWT_SECRET}
+  livekit:
+    url: ${LIVEKIT_URL:ws://localhost:7880}
+    api-key: ${LIVEKIT_API_KEY:}
+    api-secret: ${LIVEKIT_API_SECRET:}
