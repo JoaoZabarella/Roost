@@ -174,7 +174,7 @@ net; `OffsetDateTime`↔`timestamptz`; enums as text + CHECK constraints; cascad
 only server→channels→messages and server→members (user refs RESTRICT); composite
 index `(channel_id, created_at)` for history pagination. `DomainPersistenceTest`
 (`@DataJpaTest` + Testcontainers Postgres) proves validate + persistence + the
-unique-membership constraint + pagination. **Next continuer: start PR-B.**
+unique-membership constraint + pagination. **Next: start PR-B.**
 
 Original scope (for reference):
 
