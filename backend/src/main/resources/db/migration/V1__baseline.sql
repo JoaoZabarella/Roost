@@ -1,0 +1,5 @@
+-- Roost baseline migration.
+--
+-- Intentionally empty: it establishes the Flyway schema history baseline for
+-- the scaffold. Real tables (users, servers, channels, messages) arrive as
+-- V2+ migrations in Phase 1 alongside their JPA entities.
