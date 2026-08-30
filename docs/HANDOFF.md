@@ -164,7 +164,19 @@ Split into small, reviewable PRs (one logical change each). Decided design:
 stays — entities only map, never generate schema). Feature-package layout under
 `com.roost`: `auth/`, `channel/`, `chat/`, `presence/` (+ existing `config/`).
 
-### PR-A — domain model + migrations (START HERE; no endpoints)
+### PR-A — domain model + migrations ✅ DONE (branch `feat/domain-migrations`, no endpoints)
+
+**Status: implemented, `./gradlew test` green (5 tests), PR open.** JPA entities
+under feature packages (`user/`, `server/`, `channel/`, `chat/`) + Spring Data
+repositories + Flyway `V2__phase1_core.sql`. UUIDs assigned client-side
+(`GenerationType.UUID`) with a `gen_random_uuid()` column default as a safety
+net; `OffsetDateTime`↔`timestamptz`; enums as text + CHECK constraints; cascades
+only server→channels→messages and server→members (user refs RESTRICT); composite
+index `(channel_id, created_at)` for history pagination. `DomainPersistenceTest`
+(`@DataJpaTest` + Testcontainers Postgres) proves validate + persistence + the
+unique-membership constraint + pagination. **Next continuer: start PR-B.**
+
+Original scope (for reference):
 
 JPA entities + Flyway `V2__phase1_core.sql`. Postgres `uuid` columns default
 `gen_random_uuid()` — a **built-in core function since PostgreSQL 13**, so **no
