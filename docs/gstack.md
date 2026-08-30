@@ -25,7 +25,7 @@ per-repo), but its use is restricted to this project:
   Codex (`./setup --host codex` was skipped) — Codex sessions on this repo
   don't get it, by choice.
 
-## Install (for reference — already done)
+## Install (one-time setup)
 
 ```bash
 git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack
@@ -33,7 +33,10 @@ cd ~/.claude/skills/gstack
 ./setup
 ```
 
-Telemetry/analytics prompt: declined. `--host codex` flag: not used.
+> Status (this machine): already installed. During `./setup` the
+> telemetry/analytics prompt was declined and the `--host codex` flag was not
+> used, so Codex sessions don't get gstack (by choice — see the scope section
+> above).
 
 Note: gstack's setup also tries to install a Playwright Chromium browser for
 its browse commands; that step requires Node.js 20+ and will fail (harmlessly)
