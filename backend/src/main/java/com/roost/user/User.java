@@ -7,8 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import java.util.UUID;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -113,7 +113,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        // Constant until the id is assigned; stable across the JPA lifecycle.
-        return Objects.hashCode(id);
+        // Constant per type (id-independent) so the hash never shifts across the
+        // persist lifecycle and matches between an entity and its Hibernate proxy.
+        return Hibernate.getClass(this).hashCode();
     }
 }

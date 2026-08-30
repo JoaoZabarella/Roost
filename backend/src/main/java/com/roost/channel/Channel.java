@@ -13,8 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import java.util.UUID;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -114,6 +114,7 @@ public class Channel {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        // Constant per type: stable across the persist lifecycle and proxy-safe.
+        return Hibernate.getClass(this).hashCode();
     }
 }

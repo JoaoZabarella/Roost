@@ -85,6 +85,9 @@ CREATE TABLE messages (
         REFERENCES users (id) ON DELETE RESTRICT
 );
 
--- Channel history pagination: newest-first scan per channel.
-CREATE INDEX idx_messages_channel_created ON messages (channel_id, created_at);
+-- Channel history pagination: newest-first scan per channel. The id column is
+-- part of the key so it also serves the (created_at DESC, id DESC) tie-break
+-- the query uses to keep pages stable when timestamps collide.
+CREATE INDEX idx_messages_channel_created
+    ON messages (channel_id, created_at DESC, id DESC);
 CREATE INDEX idx_messages_author ON messages (author_id);

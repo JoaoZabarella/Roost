@@ -112,9 +112,9 @@ class DomainPersistenceTest {
         em.flush();
         em.clear();
 
-        List<Message> firstPage = messages.findByChannelIdOrderByCreatedAtDesc(
+        List<Message> firstPage = messages.findByChannelIdOrderByCreatedAtDescIdDesc(
             channel.getId(), PageRequest.of(0, 2));
-        List<Message> secondPage = messages.findByChannelIdOrderByCreatedAtDesc(
+        List<Message> secondPage = messages.findByChannelIdOrderByCreatedAtDescIdDesc(
             channel.getId(), PageRequest.of(1, 2));
 
         assertThat(firstPage).hasSize(2);
