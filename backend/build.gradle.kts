@@ -51,4 +51,10 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+
+    // Testcontainers' bundled docker-java does not auto-negotiate the Docker
+    // API version and falls back to an old one (1.32), which recent daemons
+    // (Engine 25+/API >= 1.40) reject. Pin a modern, widely supported version.
+    // Overridable via -PdockerApiVersion=... for older local daemons.
+    systemProperty("api.version", project.findProperty("dockerApiVersion")?.toString() ?: "1.41")
 }
