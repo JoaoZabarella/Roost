@@ -40,7 +40,7 @@ dependencies {
     // Config validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
-    // Tests: JUnit 5 + Testcontainers (real Postgres/Redis)
+    // Tests: JUnit 5 + Testcontainers (real Postgres)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
