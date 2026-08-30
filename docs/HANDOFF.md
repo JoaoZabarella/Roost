@@ -19,11 +19,12 @@ PostgreSQL + Redis. Full architecture: `docs/ARCHITECTURE.md`.
   tooling (gstack, etc.) into DOCKET work. See
   `~/.ai-memory/` global memory and (Claude-side)
   `~/.claude/projects/-home-joaomuniz-discord-selfhost/memory/roost-docket-isolation.md`.
-- **Identity isolation.** Local git config in `~/Roost` is
-  `João Zabarella <jpzmuniz@gmail.com>`. Global git config stays DOCKET —
-  never touch it from here. SSH: personal alias `github-personal` (key
-  `~/.ssh/roost_ed25519`) authenticates as `JoaoZabarella`. Default
-  `git@github.com` remains the DOCKET identity — do not use it for this repo.
+- **Identity isolation.** This repo uses a dedicated **personal** git identity,
+  set as local `user.name`/`user.email` inside `~/Roost`, separate from the
+  global git config (which stays DOCKET — never touch the global config from
+  here). SSH uses a dedicated personal host alias with its own key that
+  authenticates the personal GitHub account. The default `git@github.com`
+  remote maps to the DOCKET identity — do not use it for this repo.
 - **`gh` CLI scope.** Authenticated as `JoaoZabarella` via a fine-grained PAT
   scoped to **only** this repo (`Only select repositories → Roost`).
   Authorization to commit/open PRs is for **this repo only**, nowhere else.
@@ -43,9 +44,8 @@ PostgreSQL + Redis. Full architecture: `docs/ARCHITECTURE.md`.
   (`security.yml`: gitleaks on every push/PR + non-blocking dependency-review
   step), `docs/ARCHITECTURE.md`, README. All CI checks green. A legitimate
   Copilot review finding (secret-scan workflow only ran on `main`, not all
-  branches) was fixed (`on.push` now has no branch filter). **Merge status
-  of PR #1 not yet confirmed by user — check before assuming it's in
-  `main`.**
+  branches) was fixed (`on.push` now has no branch filter). **PR #1 merged
+  into `main` on 2026-08-29** (merge commit `0a455fc`).
 - Branch ruleset (`main-protection`) for `main` was being set up by the user
   in the GitHub UI (require PR, require status checks, block force pushes,
   restrict deletions, enforcement Active) — **not confirmed submitted/active,
@@ -100,10 +100,10 @@ folded into PR #1 instead of a separate PR #2 — see below.
 **Note on process deviation:** the original plan was a separate PR #2 for
 gstack docs. In practice, both `docs/HANDOFF.md` and `docs/gstack.md` were
 committed onto the still-open `chore/repo-foundation` (PR #1) branch instead
-— branching a new PR off `main` before PR #1 merges would miss all the
-foundation work. Once PR #1 merges, subsequent work (backend scaffold, etc.)
-should branch cleanly from `main` and go back to one-PR-per-feature.
-**Recommend merging PR #1 soon** to unblock normal branching.
+— branching a new PR off `main` before PR #1 merged would have missed all the
+foundation work. **PR #1 has since merged into `main`**, so subsequent work
+(backend scaffold, etc.) now branches cleanly from `main` and returns to
+one-PR-per-feature.
 
 ## Next after gstack scoping
 
