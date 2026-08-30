@@ -7,7 +7,12 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
-@TestPropertySource(properties = "JWT_SECRET=test-only-secret-not-used-in-production")
+@TestPropertySource(properties = {
+    "JWT_SECRET=test-only-secret-not-used-in-production",
+    "REDIS_PASSWORD=test-only-redis-password",
+    // Placeholder only; the Postgres Testcontainer supplies the real connection.
+    "POSTGRES_PASSWORD=test-only-postgres-password"
+})
 class RoostApplicationTests {
 
     @Test

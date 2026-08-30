@@ -5,7 +5,8 @@ spring:
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:roost}
     username: ${POSTGRES_USER:roost}
-    password: ${POSTGRES_PASSWORD:roost}
+    # No default: fail fast if absent rather than boot on a weak fallback.
+    password: ${POSTGRES_PASSWORD}
 
   jpa:
     hibernate:
@@ -24,6 +25,7 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
 
 server:
   port: ${BACKEND_PORT:8080}
