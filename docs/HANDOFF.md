@@ -138,8 +138,9 @@ All merged into `main`:
 
 **Verified locally:** `./gradlew clean build` green **with Docker running**;
 `./gradlew bootJar` builds a ~68 MB fat jar. To boot the app you must first
-`cp .env.example .env` (fill `POSTGRES_PASSWORD`, `REDIS_PASSWORD`, `JWT_SECRET`
-— e.g. `openssl rand -base64 24/48`), then `docker compose up -d`, then
+`cp .env.example .env` and fill the secrets — e.g.
+`openssl rand -base64 24` for `POSTGRES_PASSWORD`/`REDIS_PASSWORD` and
+`openssl rand -base64 48` for `JWT_SECRET` — then `docker compose up -d`, then
 `./gradlew bootRun` from `backend/` with those env vars exported. `.env` is
 gitignored; never commit it.
 
@@ -166,7 +167,9 @@ stays — entities only map, never generate schema). Feature-package layout unde
 ### PR-A — domain model + migrations (START HERE; no endpoints)
 
 JPA entities + Flyway `V2__phase1_core.sql`. Postgres `uuid` columns default
-`gen_random_uuid()` (native PG13+). Entities and tables:
+`gen_random_uuid()` — a **built-in core function since PostgreSQL 13**, so **no
+extension is required** (we run PG16 in dev and tests; `pgcrypto`/`uuid-ossp`
+are only needed on PG ≤ 12). Entities and tables:
 
 - **User** — `id`, `username` (unique), `email` (unique), `password_hash`,
   `display_name`, `created_at`, `updated_at`.
@@ -227,3 +230,17 @@ separate track (its own top-level folder, e.g. `desktop/`), not started yet.
   commit-attribution identity, and the security-first/public-repo rules.
 - Keep this file current: update **State** and **Next** when the next session
   would need it to continue.
+- **Professional presentation (portfolio-grade).** This is a public repo the
+  owner is proud of. Keep the history and PRs clean and mature: meaningful
+  commit messages that explain the *why*, incremental logical steps (no giant
+  dumps), honest PR descriptions, resolved review threads, green CI, and docs
+  that a senior engineer would respect. Do **not** add AI-generated-by banners,
+  co-author trailers, or similar noise. This is about the project genuinely
+  *being* well-engineered — not about disguising how it was built or
+  misrepresenting anyone's individual skill.
+- **Decision notes per PR.** For each feature PR, include a short "why this
+  decision" section (in the PR body and/or a brief note here) covering the
+  non-obvious calls — e.g. why UUID PKs, why STOMP over raw WebSocket, why
+  `ddl-auto: validate`, why fail-fast on secrets. Serves as documentation and
+  as study material so the owner can defend every choice in a technical
+  conversation.
