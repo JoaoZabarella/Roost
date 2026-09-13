@@ -47,7 +47,7 @@ roost:
     jwt-secret: ${JWT_SECRET}
     # Access-token lifetime. Kept short-ish; a refresh-token flow lands later.
     jwt-ttl: ${JWT_TTL:PT1H}
-    # Seeds the very first (OWNER) invite when the users table is empty. Blank
+    # Seeds the very first (ADMIN) invite when the users table is empty. Blank
     # default on purpose: the bootstrap initializer fails fast only when it is
     # actually needed (zero users AND no code), not on every later boot.
     bootstrap-invite-code: ${BOOTSTRAP_INVITE_CODE:}

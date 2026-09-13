@@ -1,6 +1,7 @@
 package com.roost.config;
 
 import jakarta.validation.constraints.NotBlank;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -27,13 +28,19 @@ public record RoostSecurityProperties(
     private static final int MIN_SECRET_BYTES = 32;
 
     public RoostSecurityProperties {
-        if (jwtSecret != null && jwtSecret.getBytes().length < MIN_SECRET_BYTES) {
+        // Fixed UTF-8 so the length check is deterministic across JVM/OS defaults.
+        if (jwtSecret != null
+                && jwtSecret.getBytes(StandardCharsets.UTF_8).length < MIN_SECRET_BYTES) {
             throw new IllegalStateException(
                 "roost.security.jwt-secret must be at least " + MIN_SECRET_BYTES
                     + " bytes (256 bits) for HS256");
         }
         if (jwtTtl == null) {
             jwtTtl = Duration.ofHours(1);
+        } else if (jwtTtl.isZero() || jwtTtl.isNegative()) {
+            // A non-positive TTL would mint tokens that are already expired.
+            throw new IllegalStateException(
+                "roost.security.jwt-ttl must be a positive duration");
         }
     }
 }

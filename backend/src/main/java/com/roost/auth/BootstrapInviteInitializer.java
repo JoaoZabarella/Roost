@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -59,7 +60,14 @@ public class BootstrapInviteInitializer implements ApplicationRunner {
             return; // seeded on a previous boot, first registration not done yet
         }
 
-        invites.save(new Invite(codeHash, null, SystemRole.ADMIN, 1, null, null));
-        log.info("Seeded bootstrap ADMIN invite (single-use). It is now consumable.");
+        try {
+            invites.save(new Invite(codeHash, null, SystemRole.ADMIN, 1, null, null));
+            log.info("Seeded bootstrap ADMIN invite (single-use). It is now consumable.");
+        } catch (DataIntegrityViolationException alreadySeeded) {
+            // TOCTOU: another replica booting against the same empty DB won the
+            // race and inserted the same code_hash first. The unique constraint
+            // rejected ours — that is success, not failure. Stay idempotent.
+            log.info("Bootstrap ADMIN invite already seeded by a concurrent instance.");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.roost.auth;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +27,18 @@ public class AuthExceptionHandler {
     @ExceptionHandler(DuplicateCredentialException.class)
     ProblemDetail onDuplicate(DuplicateCredentialException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    }
+
+    /**
+     * The service pre-checks username/email availability, but a concurrent
+     * registration can still trip a unique constraint between that check and the
+     * insert. The DB is the authority: translate its violation to the same 409 a
+     * duplicate gets, so a race never surfaces as a 500.
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ProblemDetail onDataIntegrity(DataIntegrityViolationException e) {
+        return ProblemDetail.forStatusAndDetail(
+            HttpStatus.CONFLICT, "username or email already in use");
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
