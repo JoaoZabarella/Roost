@@ -22,8 +22,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
 
-    // Security + JWT (auth, short-lived tokens)
+    // Security + JWT (auth, short-lived tokens). The resource-server starter
+    // brings spring-security-oauth2-jose, which provides the Nimbus JWT
+    // encoder/decoder we use to issue and validate HS256 tokens.
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
+    // Argon2id password hashing. Spring Security's Argon2PasswordEncoder
+    // delegates to BouncyCastle's Argon2 implementation at runtime.
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 
     // Persistence: JPA + Flyway (Postgres)
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

@@ -11,3 +11,4 @@ reasoning survives beyond the pull request that introduced it.
 | [0002](./0002-flyway-owns-schema.md) | Flyway owns the schema; JPA validates only | Accepted |
 | [0003](./0003-timestamps-timestamptz-utc.md) | Timestamps as `timestamptz` in UTC | Accepted |
 | [0004](./0004-stateless-jwt-security.md) | Stateless security, JWT authentication | Accepted |
+| [0005](./0005-password-hashing-and-invites.md) | Argon2id password hashing and the invite model | Accepted |

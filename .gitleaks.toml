@@ -1,0 +1,19 @@
+# Roost gitleaks configuration.
+#
+# Extends the full default ruleset (all production code stays scanned) and adds
+# one narrow allowlist: test sources under backend/src/test. Those files contain
+# deliberately fake, non-production fixtures (a >=32-byte HS256 secret and a
+# bootstrap invite code) needed to boot the Spring context in integration tests.
+# Scoping the exemption to the test tree keeps the global rules fully active on
+# everything that ships.
+
+title = "Roost gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Test-only fixtures: obviously fake secrets, never used in production"
+paths = [
+  '''backend/src/test/.*\.java''',
+]

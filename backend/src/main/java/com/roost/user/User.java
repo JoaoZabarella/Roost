@@ -2,6 +2,8 @@ package com.roost.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,11 +33,21 @@ public class User {
     @Column(nullable = false, unique = true, length = 254)
     private String email;
 
-    @Column(name = "password_hash", nullable = false, length = 100)
+    @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
     @Column(name = "display_name", nullable = false, length = 64)
     private String displayName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 16)
+    private SystemRole role = SystemRole.MEMBER;
+
+    @Column(name = "email_verified", nullable = false)
+    private boolean emailVerified = false;
+
+    @Column(name = "verified_at")
+    private OffsetDateTime verifiedAt;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -50,10 +62,26 @@ public class User {
     }
 
     public User(String username, String email, String passwordHash, String displayName) {
+        this(username, email, passwordHash, displayName, SystemRole.MEMBER);
+    }
+
+    public User(
+            String username,
+            String email,
+            String passwordHash,
+            String displayName,
+            SystemRole role) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
         this.displayName = displayName;
+        this.role = role;
+    }
+
+    /** Marks the account's email as confirmed as of now. */
+    public void markEmailVerified() {
+        this.emailVerified = true;
+        this.verifiedAt = OffsetDateTime.now();
     }
 
     public UUID getId() {
@@ -90,6 +118,22 @@ public class User {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public SystemRole getRole() {
+        return role;
+    }
+
+    public void setRole(SystemRole role) {
+        this.role = role;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public OffsetDateTime getVerifiedAt() {
+        return verifiedAt;
     }
 
     public OffsetDateTime getCreatedAt() {

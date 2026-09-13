@@ -11,7 +11,9 @@ import org.springframework.test.context.TestPropertySource;
     "JWT_SECRET=test-only-secret-not-used-in-production",
     "REDIS_PASSWORD=test-only-redis-password",
     // Placeholder only; the Postgres Testcontainer supplies the real connection.
-    "POSTGRES_PASSWORD=test-only-postgres-password"
+    "POSTGRES_PASSWORD=test-only-postgres-password",
+    // The bootstrap initializer fails fast on an empty DB with no code; supply one.
+    "BOOTSTRAP_INVITE_CODE=test-only-bootstrap-code"
 })
 class RoostApplicationTests {
 
